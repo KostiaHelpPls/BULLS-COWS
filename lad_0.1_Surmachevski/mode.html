@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>И быки, и коровы угадывает код!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #9e4a0d;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            width: 65%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="button"] {
+            width: 50%;
+            padding: 10px;
+            background-color: #9e4a0d;
+            color: white;
+            border: none; 
+        }
+    </style>
+</head>
+
+<body>
+<h1 >Игра "Быки и Коровы"</h1>
+<p >Задайте четырёхзначное число (0 может стоять на первом месте):</p> 
+<input type="number" id="secretNumber" >
+<input type="button" id="guessButton" value="Начать игру" onclick="startGame()">
+<div id="result"></div>
+
+<script>
+    //я не добавлял какой-либо алгоритм угадывания
+var secretNumber = "";
+var digit = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+var used = []; // массив чтобы смотреть использовали ли мы 
+var cow = 0;//коровы
+var bull = 0;//быки
+var attempt = 0;//счетчик для попыток
+var resultElement = document.getElementById("result");
+var guessButton = document.getElementById("guessButton");
+
+function startGame() {
+    attempt = 0;
+    var secretNumberInput = document.getElementById("secretNumber");
+    secretNumber = secretNumberInput.value;
+    secretNumberInput.disabled = true;
+    guessNumber();
+}
+
+function guessNumber() {
+    attempt++;
+    var guess = "";
+    for (var i = 0; i < 4; i++) {
+        guess += digit[i];
+    }
+    var resultElement = document.getElementById("result");
+
+    cow = 0;
+    bull = 0;
+
+    for (var i = 0; i < 4; i++) { //сами "игровые" вычисления (сравнивание попытки и загаданного)
+        if (guess[i] === secretNumber[i]) {
+            bull++;
+        } else if (secretNumber.includes(guess[i])) {
+            cow++;
+        }
+    }
+
+    resultElement.textContent = "Попытка " + attempt ;
+
+    if (bull === 4) { //ура победа
+        var secretNumberInput = document.getElementById("secretNumber");
+    } else {
+        guessNumber();
+    }
+    
+}
+</script>
